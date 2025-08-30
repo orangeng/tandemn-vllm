@@ -425,7 +425,11 @@ def register_inference_hooks(
                 return
             hook_context[context_key] = True
 
+        print(f"post-hook: output-type - {type(output)}")
         hidden_states, residual = output
+        print(
+            f"post-hook: hidden_states type - {type(hidden_states)}, residual type - {type(residual)}"
+        )
         # print(
         #     f"🔍 Post-hook called for request {request_id} step {current_step}",
         #     hidden_states,
@@ -984,6 +988,10 @@ async def send_inference_tensors_fast(
         #     hidden_np = hidden_np[-1:, :]
         #     residual_np = residual_np[-1:, :]
         # Stack along a new axis to form (2, seq_or_1, hidden)
+
+        print(f"send_ITF - hidden_np shape - {hidden_np.shape}")
+        print(f"send_ITF - residual shape - {residual_np.shape}")
+
         combined_tensor = np.stack([hidden_np, residual_np], axis=0)
         # Calculate payload size
         payload_size_bytes = combined_tensor.nbytes
