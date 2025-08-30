@@ -970,6 +970,8 @@ async def send_inference_tensors_fast(
         #     f"id {id(hidden_states)}",
         # )
         # print(f"🔍 Residual: {residual}", residual.shape)
+        print(f"send_ITF - {hidden_states.detach()}")
+        print(f"send_ITF - {residual.detach()}")
         if hidden_states.is_cuda:
             hidden_np = hidden_states.detach().cpu().numpy()
             residual_np = residual.detach().cpu().numpy()
