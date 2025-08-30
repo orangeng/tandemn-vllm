@@ -371,26 +371,29 @@ def register_inference_hooks(
 
             return (positions_reshaped, hidden_reshaped, residual_reshaped)
         else:  # Prompt phase
-            seq_len = hidden_states.shape[0]  # sequence length
+            _ = hidden_states.shape[0]  # sequence length
+            hidden_reshaped = hidden_states.to(device, non_blocking=True)
+            positions_reshaped = positions.to(device, non_blocking=True)
+            residual_reshaped = residual.to(device, non_blocking=True)
             # Reshape with minimal operations
             # print(f"🔍 Pre-hook reshaping for request {request_id} step {current_step}", hidden_states, hidden_states.shape)
-            hidden_reshaped = hidden_states.view(1, seq_len, payload_hidden_size).to(
-                device, non_blocking=True
-            )
+            # hidden_reshaped = hidden_states.view(1, seq_len, payload_hidden_size).to(
+            #     device, non_blocking=True
+            # )
             # print(f"🔍 Pre-hook reshaped hidden_states: {hidden_reshaped}", hidden_reshaped.shape)
             # print(f"🔍 Pre-hook residual: {residual}", residual.shape)
-            residual_reshaped = residual.view(1, seq_len, payload_hidden_size).to(
-                device, non_blocking=True
-            )
+            # residual_reshaped = residual.view(1, seq_len, payload_hidden_size).to(
+            # device, non_blocking=True
+            # )
             # print(f"🔍 Pre-hook residual_reshaped: {residual_reshaped}", residual_reshaped.shape)
             # print(f"🔍 Pre-hook positions: {positions}", positions.shape)
             # Handle positions efficiently
-            if positions.dim() == 1:
-                positions = positions.unsqueeze(0)
-            positions_reshaped = (
-                positions[:, -seq_len:] if positions.shape[1] >= seq_len else positions
-            )
-            positions_reshaped = positions_reshaped.to(device, non_blocking=True)
+            # if positions.dim() == 1:
+            # positions = positions.unsqueeze(0)
+            # positions_reshaped = (
+            # positions[:, -seq_len:] if positions.shape[1] >= seq_len else positions
+            # )
+            # positions_reshaped = positions_reshaped.to(device, non_blocking=True)
             # print(f"🔍 Pre-hook positions_reshaped: {positions_reshaped}", positions_reshaped.shape)
             return (positions_reshaped, hidden_reshaped, residual_reshaped)
 
