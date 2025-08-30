@@ -124,7 +124,7 @@ async def send_final_result_to_server(
 ):
     try:
         # vLLM ≥0.4 returns CompletionSequenceGroupOutput
-        print(f"🔍 Output object type: {type(final_text)}")
+        # print(f"🔍 Output object type: {type(final_text)}")
         # if isinstance(output_obj, str):
         #     final_text = output_obj
 
@@ -940,12 +940,12 @@ async def send_inference_tensors_fast(
 
         # Convert to numpy with minimal overhead
         # Use .detach() to avoid autograd overhead, .cpu() only if needed
-        print(
-            f"🔍 Hidden states: {hidden_states}",
-            hidden_states.shape,
-            f"id {id(hidden_states)}",
-        )
-        print(f"🔍 Residual: {residual}", residual.shape)
+        # print(
+        #     f"🔍 Hidden states: {hidden_states}",
+        #     hidden_states.shape,
+        #     f"id {id(hidden_states)}",
+        # )
+        # print(f"🔍 Residual: {residual}", residual.shape)
         if hidden_states.is_cuda:
             hidden_np = hidden_states.detach().cpu().numpy()
             residual_np = residual.detach().cpu().numpy()
