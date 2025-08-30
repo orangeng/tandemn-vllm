@@ -304,6 +304,8 @@ def register_inference_hooks(
             print(
                 f"🔍 Pre-hook called for request {batch_id} step {current_step} thread {threading.current_thread().name}, {threading.current_thread().ident}"
             )
+            loop = asyncio.get_running_loop()
+            print(f"asyncio loop - {id(loop)}, {loop}")
 
             # Skip ALL checks if first peer
             if hook_context["is_first_peer"]:
@@ -414,6 +416,8 @@ def register_inference_hooks(
             print(
                 f"post-hook: {request_id}, {current_step} thread {threading.current_thread().name}, {threading.current_thread().ident}"
             )
+            loop = asyncio.get_running_loop()
+            print(f"asyncio loop - {id(loop)}, {loop}")
 
             # Fast duplicate check
             context_key = f"sent_step_{current_step}"
@@ -521,6 +525,8 @@ def register_inference_hooks(
             print(
                 f"sampler-post-hook: {request_id}, {current_step} thread {threading.current_thread().name}, {threading.current_thread().ident}"
             )
+            loop = asyncio.get_running_loop()
+            print(f"asyncio loop - {id(loop)}, {loop}")
 
         if is_last_peer:
             # Serialize the entire SamplerOutput object

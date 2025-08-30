@@ -259,6 +259,7 @@ async def handle_inference_trigger_message(tensor):
             print(
                 f"Thread - {threading.current_thread().name}, {threading.current_thread().ident}"
             )
+            print(f"asyncio loop - {id(loop)}, {loop}")
             _ = loop.run_in_executor(
                 None,
                 start_inference_run,
