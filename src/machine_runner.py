@@ -608,6 +608,9 @@ async def main():
     """Main function to run the distributed computation node"""
     global current_peer_ticket, peer_ticket_map, tensor_transport
 
+    loop = asyncio.get_running_loop()
+    print(f"In main - asyncio loop is {id(loop)}")
+
     # Set up Tensor_Iroh and get the ticket #################################
     tensor_transport = TensorTransport()
     await tensor_transport.start()

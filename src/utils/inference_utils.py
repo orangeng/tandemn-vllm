@@ -239,6 +239,7 @@ def register_inference_hooks(
     context_lock = threading.RLock()
 
     main_loop = asyncio.get_running_loop()
+    print(f"In register hooks - asyncio loop is {id(main_loop)}")
 
     # Discover hidden/vocab sizes from model config or layers where possible
     def get_model_hidden_size() -> Optional[int]:
@@ -486,6 +487,7 @@ def register_inference_hooks(
             ),
             main_loop,
         )
+        print("post-hook - after calling coro to send data")
 
         # NOTE: Step increment moved to sampler_post_hook to ensure it happens on ALL peers
 
@@ -634,6 +636,7 @@ def register_inference_hooks(
                 return received_output
 
             # Clean up old data to prevent memory growth
+            print("sampler-post-hook - Attempting to grab CONTEXT_LOCK")
             with CONTEXT_LOCK:
                 if current_step > 0:
                     INFERENCE_CONTEXT[request_id].pop(str(current_step - 1), None)
@@ -641,6 +644,7 @@ def register_inference_hooks(
                     STEP_EVENTS_SAMPLER[request_id].pop(current_step - 1, None)
 
             # Increment step immediately (no waiting!)
+            print("sampler-post-hook - Attempting to grab context_lock")
             with context_lock:
                 hook_context["current_step"] = current_step + 1
 
