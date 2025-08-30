@@ -301,7 +301,9 @@ def register_inference_hooks(
             hook_context = active_contexts[0]  # ?
             batch_id = hook_context["batch_id"]
             current_step = hook_context["current_step"]
-            print(f"🔍 Pre-hook called for request {batch_id} step {current_step}")
+            print(
+                f"🔍 Pre-hook called for request {batch_id} step {current_step} thread {threading.current_thread().ident}"
+            )
 
             # Skip ALL checks if first peer
             if hook_context["is_first_peer"]:
@@ -409,7 +411,9 @@ def register_inference_hooks(
             request_id = hook_context["batch_id"]
             current_step = hook_context["current_step"]
 
-            print(f"post-hook: {request_id}, {current_step}")
+            print(
+                f"post-hook: {request_id}, {current_step} thread {threading.current_thread().ident}"
+            )
 
             # Fast duplicate check
             context_key = f"sent_step_{current_step}"
@@ -514,7 +518,9 @@ def register_inference_hooks(
             pipeline = hook_context["pipeline"]
             peer_id = hook_context["peer_id"]
 
-            print(f"sampler-post-hook: {request_id}, {current_step}")
+            print(
+                f"sampler-post-hook: {request_id}, {current_step} thread {threading.current_thread().ident}"
+            )
 
         if is_last_peer:
             # Serialize the entire SamplerOutput object
@@ -939,6 +945,7 @@ async def send_inference_tensors_fast(
     Accepts torch tensors directly and does lazy conversion only when needed.
     """
     try:
+        print("send_inference_tensors_fast - beginning of fn")
         if not next_peer_ticket:
             raise ValueError("next_peer_ticket must be provided")
 
