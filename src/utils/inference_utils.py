@@ -1003,8 +1003,9 @@ async def send_inference_tensors_fast(
             tensor=combined_tensor,
         )
 
-    except Exception:
+    except Exception as e:
         # Minimal error handling - no printing in hot path
+        print(f"send_inference_tensors_fast - Error: {e}")
         pass
 
 
