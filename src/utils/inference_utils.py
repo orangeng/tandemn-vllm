@@ -302,7 +302,7 @@ def register_inference_hooks(
             batch_id = hook_context["batch_id"]
             current_step = hook_context["current_step"]
             print(
-                f"🔍 Pre-hook called for request {batch_id} step {current_step} thread {threading.current_thread().ident}"
+                f"🔍 Pre-hook called for request {batch_id} step {current_step} thread {threading.current_thread().name}, {threading.current_thread().ident}"
             )
 
             # Skip ALL checks if first peer
@@ -412,7 +412,7 @@ def register_inference_hooks(
             current_step = hook_context["current_step"]
 
             print(
-                f"post-hook: {request_id}, {current_step} thread {threading.current_thread().ident}"
+                f"post-hook: {request_id}, {current_step} thread {threading.current_thread().name}, {threading.current_thread().ident}"
             )
 
             # Fast duplicate check
@@ -519,7 +519,7 @@ def register_inference_hooks(
             peer_id = hook_context["peer_id"]
 
             print(
-                f"sampler-post-hook: {request_id}, {current_step} thread {threading.current_thread().ident}"
+                f"sampler-post-hook: {request_id}, {current_step} thread {threading.current_thread().name}, {threading.current_thread().ident}"
             )
 
         if is_last_peer:

@@ -256,6 +256,9 @@ async def handle_inference_trigger_message(tensor):
             _ = trigger.get("assigned_layers", {})
 
             print("�� Starting inference run in background thread...")
+            print(
+                f"Thread - {threading.current_thread().name}, {threading.current_thread().ident}"
+            )
             _ = loop.run_in_executor(
                 None,
                 start_inference_run,
