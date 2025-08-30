@@ -300,7 +300,7 @@ def register_inference_hooks(
             hook_context = active_contexts[0]  # ?
             batch_id = hook_context["batch_id"]
             current_step = hook_context["current_step"]
-            # print(f"🔍 Pre-hook called for request {batch_id} step {current_step}")
+            print(f"🔍 Pre-hook called for request {batch_id} step {current_step}")
 
             # Skip ALL checks if first peer
             if hook_context["is_first_peer"]:
@@ -326,7 +326,7 @@ def register_inference_hooks(
         with context_lock:
             if hook_context.get("hidden_size") is None:
                 hook_context["hidden_size"] = payload_hidden_size
-                print(f"🔧 Inferred hidden size from payload: {payload_hidden_size}")
+                # print(f"🔧 Inferred hidden size from payload: {payload_hidden_size}")
             elif hook_context["hidden_size"] != payload_hidden_size:
                 pass
                 # print(
@@ -496,9 +496,6 @@ def register_inference_hooks(
         - For non-last peers: waits for sampler output from the last peer
         """
 
-        print("Sampler hook output: ", type(output))
-        print(output)
-
         # Get request-specific context safely
         with context_lock:
             active_contexts = [
@@ -648,7 +645,7 @@ def register_inference_hooks(
                 hook_context["current_step"] = current_step + 1
 
             print("sampler-post-hook: middle-peer, returned same sampler")
-            return virtual_output
+            return output
 
     def start_inference_run(
         batch_id: str,
